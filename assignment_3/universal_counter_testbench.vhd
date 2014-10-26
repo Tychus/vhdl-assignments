@@ -15,7 +15,7 @@ architecture behavioral of universal_counter_testbench is
   signal test_counter: std_logic_vector(3 downto 0);
   signal test_over:    std_logic;
 begin
-  universal_counter_dut: entity work.universal_counter
+  universal_counter_dut: entity work.universal_counter(two_processes)
     port map(
       downup => test_mode,
       reset  => test_reset,

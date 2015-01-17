@@ -2,7 +2,8 @@ library ieee;
 
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use IEEE.std_logic_unsigned.all;
+use ieee.std_logic_unsigned.all;
+use ieee.math_real.all;
 
 entity timer is
 port
@@ -14,18 +15,29 @@ port
 end entity;
 
 architecture behavioral of timer is
+  -- clock period 1 ms
+  constant counts_to_tick :integer := 1000;
 begin
   timing: process(timer_reset, timer_clock)
-    variable count_var: integer := 0;
+    variable count_var   :integer;
+    variable secs_passed :integer;
+    variable temp_sec    :integer;
   begin
     if timer_reset = '1' then
       count_var := 0;
+      secs_passed := 0;
     end if;
 
-    if rising_edge(timer_clock) then
+    if (timer_clock'event and timer_clock = '1') then
       count_var := count_var + 1;
-    end if;
+      temp_sec := integer(real(count_var / counts_to_tick));
 
-    timer_time <= std_logic_vector(to_unsigned(count_var, timer_time'length));
+      if temp_sec = 1 then
+        secs_passed := secs_passed + 1;
+        count_var := 0;
+      end if;
+
+      timer_time <= std_logic_vector(to_unsigned(secs_passed, timer_time'length));
+    end if;
   end process;
 end behavioral;

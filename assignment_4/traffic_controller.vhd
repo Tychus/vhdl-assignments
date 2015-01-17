@@ -38,7 +38,7 @@ begin
       timer_reset <= '1';
     end if;
 
-    if clock'event and clock = '1' then
+    if (clock'event and clock = '1') then
       if blink = '1' then
         if current_state = blink_y then
           if current_time > 1 then
@@ -64,14 +64,14 @@ begin
           next_state <= gr;
           timer_reset <= '1';
         when gr =>
-          if current_time > 30 and (fr_sensor_1 = '1' or fr_sensor_2 = '1') then
+          if (current_time > 30 and (fr_sensor_1 = '1' or fr_sensor_2 = '1')) then
             next_state <= yr_to_rr;
             timer_reset <= '1';
           else
             timer_reset <= '0';
           end if;
         when yr_to_rr =>
-          if (current_time > 2) then
+          if current_time > 2 then
             next_state <= rr_to_ry;
             timer_reset <= '1';
           else
@@ -96,7 +96,7 @@ begin
             timer_reset <= '0';
           end if;
         when rg =>
-          if current_time > 10 and (hw_sensor_1 = '1' or hw_sensor_2 = '1') then
+          if (current_time > 10 and (hw_sensor_1 = '1' or hw_sensor_2 = '1')) then
             next_state <= ry_to_rr;
             timer_reset <= '1';
           else
@@ -142,7 +142,7 @@ begin
       current_state <= gr;
     end if;
 
-    if clock'event and clock = '1' then
+    if (clock'event and clock = '1') then
       current_state <= next_state;
 
       case current_state is
@@ -183,7 +183,7 @@ begin
 
   get_hw_lights: process(clock)
   begin
-    if clock'event and clock = '1' then
+    if (clock'event and clock = '1') then
       case hw_light_color is
       when red =>
         hw_light <= "100";
@@ -201,7 +201,7 @@ begin
 
   get_fr_lights: process(clock)
   begin
-    if clock'event and clock = '1' then
+    if (clock'event and clock = '1') then
       case fr_light_color is
       when red =>
         fr_light <= "100";

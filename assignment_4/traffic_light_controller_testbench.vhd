@@ -31,7 +31,7 @@ architecture behavioral OF traffic_light_controller_testbench is
   signal hw_light_r    :std_logic_vector(2 downto 0);
 
   signal finish_simulation :boolean := false;
-  constant clock_period    :time := 20 ns;
+  constant clock_period    :time := 1 ms;
 begin
   traffic_light_controller_dut:  traffic_light_controller
     port map(
@@ -45,7 +45,6 @@ begin
       t_fr_light => fr_light_r,
       t_hw_light => hw_light_r
     );
-
 
   clock_generator: process
   begin
@@ -64,16 +63,24 @@ begin
     blink_r <= '0';
     hw_sensor_1_r <= '0';
     hw_sensor_2_r <= '0';
-    fr_sensor_1_r <= '0';
+    fr_sensor_1_r <= '1';
     fr_sensor_2_r <= '0';
     wait until clock_r'event and clock_r = '1';
     reset_r <= '0';
-  	wait for 700 ms;
+
+    wait for 70 sec;
+
     reset_r <= '1';
     blink_r <= '1';
+    hw_sensor_1_r <= '0';
+    hw_sensor_2_r <= '0';
+    fr_sensor_1_r <= '1';
+    fr_sensor_2_r <= '0';
     wait until clock_r'event and clock_r = '1';
-    reset_r <= '1';
-    wait for 700 ms;
+    reset_r <= '0';
+
+    wait for 10 sec;
+
     finish_simulation <= true;
   end process;
 end behavioral;
